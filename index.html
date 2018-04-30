@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- CSS Imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+
+    <meta charset='utf-8' />
+    <title>Display a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0%; bottom:0; width:100%; }
+    </style>
+
+  </head>
+  <body>
+    <!-- Sidebar -->
+
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <h1>Quantify Bike Share Demand in Philadelphia</h1>
+          <!--   <li </h1a class="nav-header" href="#"> Quantify Bike Share Demand in Philadelphia</a></li>-->
+      </div>
+    </nav>
+
+    <div class="sidebar">
+      <nav class="navbarv narbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <div id="first">
+              <h2>Cost-Benefit Analysis</h2>
+            </div>
+
+              <div id="first-content">
+               <div id="slidecontainer">
+                <div class="slider-box">
+              <p id="paragraph1">Choose the Number of Docks! </p>
+                  <div id=slider-box-title>
+
+              <input type="range" min="10" max="35" value="15" step="5" class="slider" id="myRange">
+                  </div>
+                </div>
+               </div>
+               <div class=Range>
+                 <span id="outputRange"></span>
+               </div>
+
+            <div class="calculate-cost-benefit">
+            <p id="paragraph2">Please click any location on the map where you want to locate a new bike share station!</p>
+            </div>
+
+             </div>
+          </div>
+
+            <div class="show-cost-benefit">
+              <table>
+              <tr>
+              <td><div id= "tripcount" class='emp2'>Trip Count</td></div>
+              <td><div id="seperator">|</td></div>
+              <td><div id="cost" class='emp2'>Fixed Cost ($)</td></div>
+              </tr>
+              <tr>
+            <td><div id= "tripcount-num" class='emp2'></div></td>
+            <td><div id="seperator"></td></div>
+            <td><div id="cost-num" class='emp2'></div></td>
+            </tr>
+            </table>
+
+            <div id= "cost-benefit" style="width:300px; font-size:17px; padding-top:15px;text-align:center">Cost Benefit Balance</div>
+            <span id= "cost-benefit-num" class="emp" style="font-size:180%">$</span>
+          </div>
+
+          <div id= "info">Surrounding information</div>
+          <div class="show-nbhd-info">
+            <table>
+            <tr>
+            <td><div id= "population">Population</div></td>
+            <td><div id="seperator">|</div></td>
+            <td><div id="median-age">Median Age</div></td>
+            <td><div id="seperator">|</div></td>
+            <td><div id="medincome">Median Income</div></td>
+            </tr>
+            <tr>
+          <td><div id= "population-num"></div></td>
+          <td><div id="seperator"></div></td>
+          <td><div id="median-age-num"></div></td>
+          <td><div id="seperator"></div></td>
+          <td><div id="medincome-num"></div></td>
+          </tr>
+          </table>
+
+          <table>
+          <tr>
+          <td><div id="dis-CBD">Distance to CBD</div></td>
+          <td><div id="seperator">|</div></td>
+          <td><div id="dis-septa">Distance to Septa</div></td>
+          <td><div id="seperator">|</div></td>
+          <td><div id="dis-septa">Distance to Crime</div></td>
+          </tr>
+          <tr>
+          <td><div id= "dis-CBD-num"></div></td>
+          <td><div id="seperator"></div></td>
+          <td><div id="dis-septa-num"></div></td>
+          <td><div id="seperator"></div></td>
+          <td><div id="dis-crime-num"></div></td>
+          </tr>
+          </table>
+
+
+    </nav>
+    </div>
+    </div>
+
+    <!-- Map -->
+  <!--<div id="map" class="map"></div> -->
+   <div id= "map" class="map" width=100%></div>
+ </div>
+ <div id = "legend" class = "legend" style="list-style: none;">
+   <p class="legendname">Legend</p>
+   <li class="legend-item">
+     <span id="Income0" class = "square1"></span>
+     <p class="Legend-title"> < -14000 </p>
+   </li>
+   <li class="legend-item">
+     <span id="Income10000" class = "square1"></span>
+     <p class="Legend-title"> -14000 ~ -12000 </p>
+   </li>
+   <li class="legend-item">
+     <span id="Income25000" class = "square1"></span>
+     <p class="Legend-title"> -12000 ~ -10000 </p>
+   </li>
+   <li class="legend-item">
+     <span id="Income40000" class = "square1"></span>
+     <p class="Legend-title"> -10000 ~ 0 </p>
+   </li>
+   <li class="legend-item">
+     <span id="Income55000" class = "square1"></span>
+     <p class="Legend-title"> 0 ~ 5000 </p>
+   </li>
+   <li class="legend-item">
+     <span id="Income80000" class = "square1"></span>
+     <p class="Legend-title"> > 5000 </p>
+   </li>
+ </div>
+
+  <div class="modal fade" id="myModal" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">How to Use the App:</h4>
+            </div>
+            <div class="modal-body">
+              <p>The app enables you to know the cost-benefit balance of building a new bike share station at any location by following 2 simple steps:<br>
+
+                     1.Choose the number of docks to be built in the new station.<br>
+                     2.Click on any point (within Philadelphia) where you want to locate the new station.<br></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button data-toggle="modal" data-target="#myModal" id="help" class="btn brn-primary">Help</button>
+
+    <!-- Javascript Imports -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>-->
+        <script src="js/Main.js"></script>
+
+  </body>
+</html>
